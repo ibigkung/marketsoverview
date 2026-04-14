@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, TrendingUp, Activity, X } from "lucide-react";
+import { Search, TrendingUp, Activity, X, Moon, Sun } from "lucide-react";
+import { useAppContext } from "@/context/AppContext";
 
 interface HeaderProps {
   currentSymbol: string;
@@ -12,6 +13,7 @@ export default function Header({ currentSymbol, onSearch }: HeaderProps) {
   const [searchValue, setSearchValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { theme, toggleTheme, language, toggleLanguage, t } = useAppContext();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,19 +52,18 @@ export default function Header({ currentSymbol, onSearch }: HeaderProps) {
         {/* Title section */}
         <div className="flex items-center gap-4">
           <div className="relative">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-accent-orange to-accent-orange/70 flex items-center justify-center glow-orange">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center shadow-lg">
               <TrendingUp className="w-6 h-6 text-white" />
             </div>
-            <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-accent-green rounded-full border-2 border-bg-primary animate-pulse-live" />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-text-primary">
-              Market Overview
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-text-primary">
+              {t('marketOverview')}
             </h1>
-            <div className="flex items-center gap-2 mt-0.5">
-              <Activity className="w-3.5 h-3.5 text-accent-orange" />
-              <p className="text-sm text-text-secondary">
-                Multi-Timeframe Analysis (MTA) Dashboard
+            <div className="flex items-center gap-2 mt-1">
+              <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse-live" />
+              <p className="text-xs sm:text-sm font-semibold text-teal-400 tracking-wide uppercase">
+                {t('marketOpen')}
               </p>
             </div>
           </div>
@@ -73,14 +74,14 @@ export default function Header({ currentSymbol, onSearch }: HeaderProps) {
           {/* Current symbol badge */}
           <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-bg-card border border-border-primary">
             <div className="w-2 h-2 rounded-full bg-accent-green animate-pulse-live" />
-            <span className="text-xs text-text-muted uppercase tracking-wider">Active</span>
+            <span className="text-xs text-text-muted uppercase tracking-wider">{t('active')}</span>
             <span className="text-sm font-semibold text-accent-orange">{currentSymbol}</span>
           </div>
 
           {/* Search bar */}
           <form onSubmit={handleSubmit} className="relative group">
             <div
-              className={`flex items-center gap-2 bg-bg-input border rounded-xl px-4 py-2.5 transition-all duration-300 w-[280px] sm:w-[340px] ${
+              className={`flex items-center gap-2 bg-bg-input border rounded-xl px-4 py-2.5 transition-all duration-300 w-[200px] sm:w-[280px] lg:w-[340px] ${
                 isFocused
                   ? "border-accent-orange shadow-[0_0_0_3px_rgba(249,115,22,0.1)]"
                   : "border-border-primary hover:border-text-muted"
@@ -99,7 +100,7 @@ export default function Header({ currentSymbol, onSearch }: HeaderProps) {
                 onChange={(e) => setSearchValue(e.target.value)}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                placeholder="Search pair (e.g. BINANCE:BTCUSDT)"
+                placeholder={t('searchPlaceholder')}
                 className="bg-transparent outline-none text-sm text-text-primary placeholder:text-text-muted w-full"
               />
               {searchValue && (
@@ -118,6 +119,23 @@ export default function Header({ currentSymbol, onSearch }: HeaderProps) {
               )}
             </div>
           </form>
+
+          {/* Theme & Language Controls */}
+          <div className="flex items-center gap-1 sm:gap-2 pl-2 sm:pl-4 border-l border-border-primary">
+            <button
+              onClick={toggleTheme}
+              className="p-2 sm:p-2.5 rounded-lg text-text-muted hover:bg-bg-card hover:text-text-primary transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Moon className="w-4 h-4 sm:w-5 sm:h-5" /> : <Sun className="w-4 h-4 sm:w-5 sm:h-5" />}
+            </button>
+            <button
+              onClick={toggleLanguage}
+              className="px-2 sm:px-3 py-2 rounded-lg text-text-muted hover:bg-bg-card hover:text-text-primary transition-colors font-semibold text-xs sm:text-sm min-w-[2.5rem] sm:min-w-[3rem] text-center"
+            >
+              {language}
+            </button>
+          </div>
         </div>
       </div>
     </header>

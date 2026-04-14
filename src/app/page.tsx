@@ -21,7 +21,7 @@ export interface AssetPreset {
 }
 
 const ASSET_PRESETS: Record<AssetFilter, AssetPreset> = {
-  Stock: { label: "S&P 500", symbol: "SPX", exchange: "SP" },
+  Stock: { label: "Apple", symbol: "AAPL", exchange: "NASDAQ" },
   Gold: { label: "Gold", symbol: "XAUUSD", exchange: "OANDA" },
   Silver: { label: "Silver", symbol: "XAGUSD", exchange: "OANDA" },
   BTC: { label: "Bitcoin", symbol: "BTCUSDT", exchange: "BINANCE" },
@@ -58,7 +58,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-bg-primary">
+    <main className="relative w-full bg-bg-primary">
       {/* Background gradient accents */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-[400px] -left-[200px] w-[800px] h-[800px] rounded-full bg-accent-orange/[0.03] blur-[120px]" />
